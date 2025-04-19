@@ -35,7 +35,7 @@ public:
 	friend std::ostream& operator<< (std::ostream& out, const Matrix& src) {
 		for (int r = 0; r < row; r++) {
 			for (int c = 0; c < col; c++) {
-				out << std::setw(2) << src.ele[r * row + c] << " ";
+				out << std::setw(2) << src.ele[r * col + c] << " ";
 			}
 			out << std::endl;
 		}
@@ -60,6 +60,21 @@ public:
 			for (int c = 0; c < right_col; c++) {
 				for (int k = 0; k < col; k++)
 					result(r, c) += (*this)(r, k) * right(k, c);
+			}
+		}
+		return result;
+	}
+
+	//¾ØÕó¼Ó·¨
+	template <typename U>
+	auto operator+ (Matrix<U, row, col> right)const
+		->Matrix<decltype(T{} + U{}), row, col >
+	{
+		using resulttype = Matrix<decltype(T{} + U{}), row, col > ;
+		resulttype result;
+		for (int r = 0; r < row; r++) {
+			for (int c = 0; c < col; c++) {
+				result(r, c) = (*this)(r, c) + right(r, c);
 			}
 		}
 		return result;
